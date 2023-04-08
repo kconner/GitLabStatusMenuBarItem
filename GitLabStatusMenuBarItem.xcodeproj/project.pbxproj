@@ -14,6 +14,18 @@
 		2CF0220229E1F1230029675E /* GitLabStatusMenuBarItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF0220129E1F1230029675E /* GitLabStatusMenuBarItemTests.swift */; };
 		2CF0220C29E1F1230029675E /* GitLabStatusMenuBarItemUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF0220B29E1F1230029675E /* GitLabStatusMenuBarItemUITests.swift */; };
 		2CF0220E29E1F1230029675E /* GitLabStatusMenuBarItemUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF0220D29E1F1230029675E /* GitLabStatusMenuBarItemUITestsLaunchTests.swift */; };
+		2CF0222029E1F25C0029675E /* StatusBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF0221F29E1F25C0029675E /* StatusBarItem.swift */; };
+		2CF0222229E1F2A30029675E /* StatusBarMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF0222129E1F2A30029675E /* StatusBarMenu.swift */; };
+		2CF0222529E1F35F0029675E /* GitLabDataFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF0222329E1F3220029675E /* GitLabDataFetcher.swift */; };
+		2CF0222829E1F5DC0029675E /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF0222729E1F5DC0029675E /* Model.swift */; };
+		2CF0223329E2032D0029675E /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF0223229E2032D0029675E /* Secrets.swift */; };
+		2CF0223529E210210029675E /* GitLabDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF0223429E210210029675E /* GitLabDataStore.swift */; };
+		2CF0223729E212D50029675E /* MergeRequestsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF0223629E212D50029675E /* MergeRequestsListView.swift */; };
+		2CF0223929E212F50029675E /* MergeRequestRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF0223829E212F50029675E /* MergeRequestRow.swift */; };
+		2CF0223B29E2130F0029675E /* PipelinesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF0223A29E2130F0029675E /* PipelinesListView.swift */; };
+		2CF0223D29E213240029675E /* PipelineRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF0223C29E213240029675E /* PipelineRow.swift */; };
+		2CF0223F29E213B10029675E /* GitLabDataStore+Example.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF0223E29E213B10029675E /* GitLabDataStore+Example.swift */; };
+		2CF0224129E21E850029675E /* PipelineStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF0224029E21E850029675E /* PipelineStatusView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +57,18 @@
 		2CF0220729E1F1230029675E /* GitLabStatusMenuBarItemUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GitLabStatusMenuBarItemUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CF0220B29E1F1230029675E /* GitLabStatusMenuBarItemUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitLabStatusMenuBarItemUITests.swift; sourceTree = "<group>"; };
 		2CF0220D29E1F1230029675E /* GitLabStatusMenuBarItemUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitLabStatusMenuBarItemUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		2CF0221F29E1F25C0029675E /* StatusBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarItem.swift; sourceTree = "<group>"; };
+		2CF0222129E1F2A30029675E /* StatusBarMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarMenu.swift; sourceTree = "<group>"; };
+		2CF0222329E1F3220029675E /* GitLabDataFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitLabDataFetcher.swift; sourceTree = "<group>"; };
+		2CF0222729E1F5DC0029675E /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		2CF0223229E2032D0029675E /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
+		2CF0223429E210210029675E /* GitLabDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitLabDataStore.swift; sourceTree = "<group>"; };
+		2CF0223629E212D50029675E /* MergeRequestsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergeRequestsListView.swift; sourceTree = "<group>"; };
+		2CF0223829E212F50029675E /* MergeRequestRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergeRequestRow.swift; sourceTree = "<group>"; };
+		2CF0223A29E2130F0029675E /* PipelinesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelinesListView.swift; sourceTree = "<group>"; };
+		2CF0223C29E213240029675E /* PipelineRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineRow.swift; sourceTree = "<group>"; };
+		2CF0223E29E213B10029675E /* GitLabDataStore+Example.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitLabDataStore+Example.swift"; sourceTree = "<group>"; };
+		2CF0224029E21E850029675E /* PipelineStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineStatusView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +103,7 @@
 				2CF0220029E1F1230029675E /* GitLabStatusMenuBarItemTests */,
 				2CF0220A29E1F1230029675E /* GitLabStatusMenuBarItemUITests */,
 				2CF021ED29E1F1220029675E /* Products */,
+				2CF0222F29E1F8CC0029675E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -95,11 +120,23 @@
 		2CF021EE29E1F1220029675E /* GitLabStatusMenuBarItem */ = {
 			isa = PBXGroup;
 			children = (
+				2CF0222729E1F5DC0029675E /* Model.swift */,
 				2CF021EF29E1F1220029675E /* GitLabStatusMenuBarItemApp.swift */,
 				2CF021F129E1F1220029675E /* ContentView.swift */,
 				2CF021F329E1F1230029675E /* Assets.xcassets */,
 				2CF021F829E1F1230029675E /* GitLabStatusMenuBarItem.entitlements */,
 				2CF021F529E1F1230029675E /* Preview Content */,
+				2CF0222329E1F3220029675E /* GitLabDataFetcher.swift */,
+				2CF0221F29E1F25C0029675E /* StatusBarItem.swift */,
+				2CF0222129E1F2A30029675E /* StatusBarMenu.swift */,
+				2CF0223629E212D50029675E /* MergeRequestsListView.swift */,
+				2CF0223229E2032D0029675E /* Secrets.swift */,
+				2CF0223429E210210029675E /* GitLabDataStore.swift */,
+				2CF0223829E212F50029675E /* MergeRequestRow.swift */,
+				2CF0223A29E2130F0029675E /* PipelinesListView.swift */,
+				2CF0223C29E213240029675E /* PipelineRow.swift */,
+				2CF0224029E21E850029675E /* PipelineStatusView.swift */,
+				2CF0223E29E213B10029675E /* GitLabDataStore+Example.swift */,
 			);
 			path = GitLabStatusMenuBarItem;
 			sourceTree = "<group>";
@@ -129,6 +166,13 @@
 			path = GitLabStatusMenuBarItemUITests;
 			sourceTree = "<group>";
 		};
+		2CF0222F29E1F8CC0029675E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -145,6 +189,8 @@
 			dependencies = (
 			);
 			name = GitLabStatusMenuBarItem;
+			packageProductDependencies = (
+			);
 			productName = GitLabStatusMenuBarItem;
 			productReference = 2CF021EC29E1F1220029675E /* GitLabStatusMenuBarItem.app */;
 			productType = "com.apple.product-type.application";
@@ -217,6 +263,8 @@
 				Base,
 			);
 			mainGroup = 2CF021E329E1F1220029675E;
+			packageReferences = (
+			);
 			productRefGroup = 2CF021ED29E1F1220029675E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -259,8 +307,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CF0222829E1F5DC0029675E /* Model.swift in Sources */,
+				2CF0222229E1F2A30029675E /* StatusBarMenu.swift in Sources */,
+				2CF0223529E210210029675E /* GitLabDataStore.swift in Sources */,
 				2CF021F229E1F1220029675E /* ContentView.swift in Sources */,
+				2CF0223729E212D50029675E /* MergeRequestsListView.swift in Sources */,
+				2CF0223B29E2130F0029675E /* PipelinesListView.swift in Sources */,
+				2CF0223929E212F50029675E /* MergeRequestRow.swift in Sources */,
+				2CF0222529E1F35F0029675E /* GitLabDataFetcher.swift in Sources */,
+				2CF0224129E21E850029675E /* PipelineStatusView.swift in Sources */,
 				2CF021F029E1F1220029675E /* GitLabStatusMenuBarItemApp.swift in Sources */,
+				2CF0223329E2032D0029675E /* Secrets.swift in Sources */,
+				2CF0223D29E213240029675E /* PipelineRow.swift in Sources */,
+				2CF0223F29E213B10029675E /* GitLabDataStore+Example.swift in Sources */,
+				2CF0222029E1F25C0029675E /* StatusBarItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
