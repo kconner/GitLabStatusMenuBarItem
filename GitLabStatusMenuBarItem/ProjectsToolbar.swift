@@ -28,14 +28,18 @@ struct ProjectsToolbar: View {
             Spacer()
             
             Menu {
-                Button("Subscriptions") {
-                    showSubscriptionsView.toggle()
+                Section {
+                    Button("Subscriptions") {
+                        showSubscriptionsView.toggle()
+                    }
+                    Button("GitLab Token") {
+                        showingTokenSheet = true
+                    }
                 }
-                Button("Set GitLab Token") {
-                    showingTokenSheet = true
-                }
-                Button("Quit") {
-                    NSApp.terminate(nil)
+                Section {
+                    Button("Quit") {
+                        NSApp.terminate(nil)
+                    }
                 }
             } label: {
                 if store.isLoading {
@@ -49,7 +53,7 @@ struct ProjectsToolbar: View {
             .fixedSize()
         }
         .sheet(isPresented: $showSubscriptionsView) {
-            SubscriptionsView()
+            SubscriptionsSheet()
         }
         .sheet(isPresented: $showingTokenSheet) {
             TokenSheet()

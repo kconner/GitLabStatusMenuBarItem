@@ -1,5 +1,5 @@
 //
-//  SubscriptionsView.swift
+//  SubscriptionsSheet.swift
 //  GitLabStatusMenuBarItem
 //
 //  Created by Kevin Conner on 2023-04-08.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SubscriptionsView: View {
+struct SubscriptionsSheet: View {
     @AppStorage("subscriptions") var subscriptionsData: Data = Data()
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var store: ProjectStore
@@ -21,16 +21,38 @@ struct SubscriptionsView: View {
         return decodedList
     }
     
+    @State private var selection: Set<Subscription.ID> = []
+    
     var body: some View {
         VStack {
             HStack {
-                TextField("Enter a project's full path", text: $newSubscriptionPath)
+                Text("Subscriptions")
+                    .font(.headline)
+                
+                Spacer()
+            }
+            .padding(.horizontal)
+            
+            List(subscriptions, selection: $selection) { subscription in
+                HStack {
+                    Text(subscription.fullPath)
+                }
+            }
+            .onDeleteCommand {
+                removeSelectedSubscriptions()
+            }
+            .listStyle(.inset(alternatesRowBackgrounds: true))
+            .frame(height: 170)
+            
+            HStack {
+                TextField("organization/path/to/project", text: $newSubscriptionPath)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                 
                 Button("Search") {
                     searchProjectID()
                 }
             }
+            .padding(.horizontal)
             
             if let subscription = subscriptionSearchResult {
                 Button("Add \(subscription.fullPath)") {
@@ -40,28 +62,21 @@ struct SubscriptionsView: View {
                 }
             }
             
-            List {
-                ForEach(subscriptions) { subscription in
-                    Text(subscription.fullPath)
-                }
-                .onDelete { indexSet in
-                    removeSubscriptions(at: indexSet)
-                }
-            }
-            .listStyle(InsetListStyle())
-            
             HStack {
                 Button("Done") {
                     dismiss()
                 }
             }
         }
-        .padding()
+        .padding(.vertical)
+        .frame(width: 300)
     }
     
-    func removeSubscriptions(at indexSet: IndexSet) {
-        var newValue = subscriptions
-        newValue.remove(atOffsets: indexSet)
+    func removeSelectedSubscriptions() {
+        let newValue = subscriptions.filter { subscription in
+            !selection.contains(subscription.id)
+        }
+        
         setSubscriptions(newValue)
     }
     
@@ -87,4 +102,11 @@ struct SubscriptionsView: View {
         }
     }
 
+}
+
+struct SubscriptionsSheet_Previews: PreviewProvider {
+    static var previews: some View {
+        SubscriptionsSheet()
+            .environmentObject(ProjectStore.exampleStore)
+    }
 }
