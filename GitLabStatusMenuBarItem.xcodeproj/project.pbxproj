@@ -16,7 +16,6 @@
 		2CF0222229E1F2A30029675E /* ProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF0222129E1F2A30029675E /* ProjectsView.swift */; };
 		2CF0222529E1F35F0029675E /* ProjectQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF0222329E1F3220029675E /* ProjectQuery.swift */; };
 		2CF0222829E1F5DC0029675E /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF0222729E1F5DC0029675E /* Model.swift */; };
-		2CF0223329E2032D0029675E /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF0223229E2032D0029675E /* Secrets.swift */; };
 		2CF0223529E210210029675E /* ProjectStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF0223429E210210029675E /* ProjectStore.swift */; };
 		2CF0223929E212F50029675E /* MergeRequestRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF0223829E212F50029675E /* MergeRequestRow.swift */; };
 		2CF0223B29E2130F0029675E /* ProjectItemList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF0223A29E2130F0029675E /* ProjectItemList.swift */; };
@@ -61,7 +60,6 @@
 		2CF0222129E1F2A30029675E /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
 		2CF0222329E1F3220029675E /* ProjectQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectQuery.swift; sourceTree = "<group>"; };
 		2CF0222729E1F5DC0029675E /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
-		2CF0223229E2032D0029675E /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		2CF0223429E210210029675E /* ProjectStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStore.swift; sourceTree = "<group>"; };
 		2CF0223829E212F50029675E /* MergeRequestRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergeRequestRow.swift; sourceTree = "<group>"; };
 		2CF0223A29E2130F0029675E /* ProjectItemList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectItemList.swift; sourceTree = "<group>"; };
@@ -130,7 +128,6 @@
 				2CF021EF29E1F1220029675E /* GitLabStatusApp.swift */,
 				2CF0224829E24AEB0029675E /* UserDefaults+GitLabToken.swift */,
 				2CF0224E29E262FF0029675E /* UserDefaults+Subscriptions.swift */,
-				2CF0223229E2032D0029675E /* Secrets.swift */,
 				2CF0222729E1F5DC0029675E /* Model.swift */,
 				2CF0222329E1F3220029675E /* ProjectQuery.swift */,
 				2CF0223429E210210029675E /* ProjectStore.swift */,
@@ -326,7 +323,6 @@
 				2CF0224129E21E850029675E /* PipelineStatusView.swift in Sources */,
 				2CF0224929E24AEB0029675E /* UserDefaults+GitLabToken.swift in Sources */,
 				2CF021F029E1F1220029675E /* GitLabStatusApp.swift in Sources */,
-				2CF0223329E2032D0029675E /* Secrets.swift in Sources */,
 				2CF0223D29E213240029675E /* PipelineRow.swift in Sources */,
 				2CF0223F29E213B10029675E /* ProjectStore+Example.swift in Sources */,
 			);
