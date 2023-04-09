@@ -10,7 +10,11 @@ import SwiftUI
 @main
 struct GitLabStatusApp: App {
     
-    let store = ProjectStore()
+    let store: ProjectStore
+    
+    init() {
+        store = ProjectStore()
+    }
 
     var body: some Scene {
         MenuBarExtra {

@@ -17,8 +17,8 @@ class ProjectStore: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
     
     init() {
-        UserDefaults.standard.publisher(for: \.gitLabToken)
-            .sink { [weak self] _ in
+        NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)
+            .sink { [weak self] notification in
                 guard let self else { return }
                 self.errorMessage = nil
                 self.refreshData()
@@ -37,9 +37,16 @@ class ProjectStore: ObservableObject {
             return
         }
         
+        let subscriptionIDs = UserDefaults.standard.subscriptions.map(\.id)
+        guard !subscriptionIDs.isEmpty else {
+            projects = []
+            errorMessage = "No subscriptions. Add them in the corner menu."
+            return
+        }
+        
         isLoading = true
         
-        ProjectQuery().fetchData(token: token) { [weak self] result in
+        ProjectQuery().fetchData(token: token, projectIDs: subscriptionIDs) { [weak self] result in
             DispatchQueue.main.async {
                 guard let self else { return }
                 
@@ -51,6 +58,25 @@ class ProjectStore: ObservableObject {
                     self.errorMessage = nil
                 case .failure(let error):
                     self.errorMessage = "Error fetching GitLab data: \(error)"
+                }
+            }
+        }
+    }
+    
+    func searchProjectID(for fullPath: String, completion: @escaping (Result<Subscription?, Error>) -> Void) {
+        let token = UserDefaults.standard.gitLabToken
+        guard !token.isEmpty else { return }
+
+        ProjectQuery().fetchProjectDetails(token: token, fullPath: fullPath) { result in
+            switch result {
+            case .success(let subscription):
+                DispatchQueue.main.async {
+                    completion(.success(subscription))
+                }
+            case .failure(let error):
+                print("Error searching for project: \(error)")
+                DispatchQueue.main.async {
+                    completion(.failure(error))
                 }
             }
         }

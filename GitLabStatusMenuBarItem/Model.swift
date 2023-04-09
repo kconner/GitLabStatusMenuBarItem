@@ -19,6 +19,14 @@ struct GitLabProjectsResponse: Codable {
     }
 }
 
+struct GitLabSubcriptionResponse: Codable {
+    let data: Data
+    
+    struct Data: Codable {
+        let subscription: Subscription
+    }
+}
+
 struct GitLabProject: Codable, Identifiable {
     let id: String
     let fullPath: String
@@ -98,4 +106,9 @@ struct MergeRequest: Codable, Identifiable {
 struct Approver: Codable {
     let username: String
     let avatarUrl: URL?
+}
+
+struct Subscription: Identifiable, Codable, Hashable {
+    let id: String
+    let fullPath: String
 }

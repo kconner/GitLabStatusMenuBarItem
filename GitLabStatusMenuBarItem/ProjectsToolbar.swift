@@ -11,6 +11,7 @@ struct ProjectsToolbar: View {
     @Binding var selectedTab: ProjectsView.Tab
     @EnvironmentObject var store: ProjectStore
     @State private var showingTokenSheet = false
+    @State private var showSubscriptionsView = false
     
     var body: some View {
         HStack {
@@ -27,6 +28,9 @@ struct ProjectsToolbar: View {
             Spacer()
             
             Menu {
+                Button("Subscriptions") {
+                    showSubscriptionsView.toggle()
+                }
                 Button("Set GitLab Token") {
                     showingTokenSheet = true
                 }
@@ -43,6 +47,9 @@ struct ProjectsToolbar: View {
                 store.refreshData()
             }
             .fixedSize()
+        }
+        .sheet(isPresented: $showSubscriptionsView) {
+            SubscriptionsView()
         }
         .sheet(isPresented: $showingTokenSheet) {
             TokenSheet()
