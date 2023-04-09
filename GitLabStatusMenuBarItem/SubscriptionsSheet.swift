@@ -12,7 +12,7 @@ struct SubscriptionsSheet: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var store: ProjectStore
     @State private var newSubscriptionPath: String = ""
-    @State private var subscriptionSearchResult: Subscription?
+    @State private var errorMessage: String?
     
     var subscriptions: [Subscription] {
         guard let decodedList = try? JSONDecoder().decode([Subscription].self, from: subscriptionsData) else {
@@ -42,34 +42,38 @@ struct SubscriptionsSheet: View {
                 removeSelectedSubscriptions()
             }
             .listStyle(.inset(alternatesRowBackgrounds: true))
-            .frame(height: 170)
             
-            HStack {
-                TextField("organization/path/to/project", text: $newSubscriptionPath)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+            VStack {
+                HStack {
+                    TextField("organization/path/to/project", text: $newSubscriptionPath)
+                        .onSubmit {
+                            searchProjectID()
+                        }
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    
+                    Button("Search") {
+                        searchProjectID()
+                    }
+                }
                 
-                Button("Search") {
-                    searchProjectID()
+                if let errorMessage {
+                    HStack {
+                        Text(errorMessage)
+                            .font(.subheadline)
+                        Spacer()
+                    }
+                }
+                
+                HStack {
+                    Button("Done") {
+                        dismiss()
+                    }
                 }
             }
             .padding(.horizontal)
-            
-            if let subscription = subscriptionSearchResult {
-                Button("Add \(subscription.fullPath)") {
-                    setSubscriptions(subscriptions + [subscription])
-                    newSubscriptionPath = ""
-                    subscriptionSearchResult = nil
-                }
-            }
-            
-            HStack {
-                Button("Done") {
-                    dismiss()
-                }
-            }
         }
         .padding(.vertical)
-        .frame(width: 300)
+        .frame(width: 300, height: 300)
     }
     
     func removeSelectedSubscriptions() {
@@ -87,16 +91,28 @@ struct SubscriptionsSheet: View {
     }
     
     func searchProjectID() {
+        guard !newSubscriptionPath.isEmpty else { return }
+        
         store.searchProjectID(for: newSubscriptionPath) { result in
             switch result {
             case .success(let subscription):
                 DispatchQueue.main.async {
-                    self.subscriptionSearchResult = subscription
+                    if let subscription {
+                        if !subscriptions.contains(where: { $0.id == subscription.id }) {
+                            setSubscriptions(subscriptions + [subscription])
+                        }
+                        
+                        errorMessage = nil
+                        
+                        newSubscriptionPath = ""
+                    } else {
+                        errorMessage = "Not found."
+                    }
                 }
             case .failure(let error):
                 print("Error searching for project: \(error)")
                 DispatchQueue.main.async {
-                    self.subscriptionSearchResult = nil
+                    errorMessage = "Not found."
                 }
             }
         }

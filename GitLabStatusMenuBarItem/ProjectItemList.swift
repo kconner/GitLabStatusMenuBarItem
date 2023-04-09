@@ -22,15 +22,20 @@ struct ProjectItemList<NestedItem: Identifiable, Content: View>: View {
         List {
             if let projects {
                 ForEach(projects) { project in
-                    Section(header: Text(project.fullPath)) {
+                    Section {
                         ForEach(project[keyPath: nestedItemsKeyPath]) { nestedItem in
                             content(project, nestedItem)
+                        }
+                    } header: {
+                        Link(destination: project.webUrl) {
+                            Text(project.fullPath)
                         }
                     }
                 }
             }
         }
         .listStyle(.inset(alternatesRowBackgrounds: true))
+        .scrollBounceBehavior(.always)
     }
 }
 
