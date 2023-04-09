@@ -93,6 +93,6 @@ struct MergeRequestRow: View {
 
 struct MergeRequestRow_Previews: PreviewProvider {
     static var previews: some View {
-        MergeRequestRow(mergeRequest: GitLabDataStore.exampleStore.gitLabData![0].mergeRequests.nodes[0])
+        MergeRequestRow(mergeRequest: ProjectStore.exampleStore.projects![0].mergeRequests.nodes[0])
     }
 }

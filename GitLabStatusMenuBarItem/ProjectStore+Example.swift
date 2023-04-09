@@ -1,5 +1,5 @@
 //
-//  GitLabDataStore+Example.swift
+//  ProjectStore+Example.swift
 //  GitLabStatusMenuBarItem
 //
 //  Created by Kevin Conner on 2023-04-08.
@@ -7,10 +7,10 @@
 
 import Foundation
 
-extension GitLabDataStore {
-    static var exampleStore: GitLabDataStore {
-        let store = GitLabDataStore()
-        store.gitLabData = [
+extension ProjectStore {
+    static var exampleStore: ProjectStore {
+        let store = ProjectStore()
+        store.projects = [
             GitLabProject(id: "1", fullPath: "Example Project", webUrl: URL(string: "https://example.com")!, pipelines: examplePipelines, mergeRequests: exampleMergeRequests)
         ]
         return store

@@ -49,6 +49,6 @@ struct PipelineStatusView: View {
 
 struct PipelineStatusView_Previews: PreviewProvider {
     static var previews: some View {
-        PipelineStatusView(pipeline: GitLabDataStore.exampleStore.gitLabData![0].pipelines.nodes[0])
+        PipelineStatusView(pipeline: ProjectStore.exampleStore.projects![0].pipelines.nodes[0])
     }
 }

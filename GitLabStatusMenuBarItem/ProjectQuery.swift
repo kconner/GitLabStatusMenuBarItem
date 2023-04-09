@@ -1,5 +1,5 @@
 //
-//  GitLabDataFetcher.swift
+//  ProjectQuery.swift
 //  GitLabStatusMenuBarItem
 //
 //  Created by Kevin Conner on 2023-04-08.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-class GitLabDataFetcher {
+class ProjectQuery {
     
     private let gitLabApiURL = "https://gitlab.com/api/graphql"
     

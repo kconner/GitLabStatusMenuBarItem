@@ -69,7 +69,7 @@ struct PipelineRow: View {
 
 struct PipelineRow_Previews: PreviewProvider {
     static var previews: some View {
-        let project = GitLabDataStore.exampleStore.gitLabData![0]
+        let project = ProjectStore.exampleStore.projects![0]
         
         PipelineRow(projectURL: project.webUrl, pipeline: project.pipelines.nodes[0])
     }
