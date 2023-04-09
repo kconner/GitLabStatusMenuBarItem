@@ -14,10 +14,16 @@ class ProjectStore: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
     
-    private let dataFetcher: ProjectQuery
+    private var cancellables: Set<AnyCancellable> = []
     
-    init(fetcher: ProjectQuery = ProjectQuery()) {
-        self.dataFetcher = fetcher
+    init() {
+        UserDefaults.standard.publisher(for: \.gitLabToken)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                self.errorMessage = nil
+                self.refreshData()
+            }
+            .store(in: &cancellables)
     }
     
     func refreshData() {
@@ -25,9 +31,15 @@ class ProjectStore: ObservableObject {
             return
         }
         
+        let token = UserDefaults.standard.gitLabToken
+        guard !token.isEmpty else {
+            errorMessage = "No GitLab token. Set it in the corner menu."
+            return
+        }
+        
         isLoading = true
         
-        dataFetcher.fetchData { [weak self] result in
+        ProjectQuery().fetchData(token: token) { [weak self] result in
             DispatchQueue.main.async {
                 guard let self else { return }
                 

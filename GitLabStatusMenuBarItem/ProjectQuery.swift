@@ -11,10 +11,10 @@ class ProjectQuery {
     
     private let gitLabApiURL = "https://gitlab.com/api/graphql"
     
-    func fetchData(completion: @escaping (Result<[GitLabProject], Error>) -> Void) {
+    func fetchData(token: String, completion: @escaping (Result<[GitLabProject], Error>) -> Void) {
         var request = URLRequest(url: URL(string: gitLabApiURL)!)
         request.httpMethod = "POST"
-        request.addValue("Bearer \(gitLabPersonalAccessToken)", forHTTPHeaderField: "Authorization")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         

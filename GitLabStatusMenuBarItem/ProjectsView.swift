@@ -19,35 +19,8 @@ struct ProjectsView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            HStack {
-                Picker(selection: $selectedTab) {
-                    Text("Merge Requests")
-                        .tag(Tab.mergeRequests)
-                    
-                    Text("Pipelines")
-                        .tag(Tab.pipelines)
-                } label: {}
-                .pickerStyle(.segmented)
-                .fixedSize()
-                
-                Spacer()
-                
-                Menu {
-                    Button("Quit") {
-                        NSApp.terminate(nil)
-                    }
-                } label: {
-                    if store.isLoading {
-                        Image(systemName: "ellipsis")
-                    } else {
-                        Image(systemName: "arrow.clockwise")
-                    }
-                } primaryAction: {
-                    store.refreshData()
-                }
-                .fixedSize()
-            }
-            .padding([.top, .horizontal])
+            ProjectsToolbar(selectedTab: $selectedTab)
+                .padding([.top, .horizontal])
             
             if let message = store.errorMessage {
                 Text(message)
@@ -72,7 +45,6 @@ struct ProjectsView: View {
                     }
                 }
             }
-            .listStyle(.inset(alternatesRowBackgrounds: true))
         }
         .frame(width: 320, height: 700)
         .background(.background)

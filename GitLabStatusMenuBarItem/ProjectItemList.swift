@@ -28,10 +28,9 @@ struct ProjectItemList<NestedItem: Identifiable, Content: View>: View {
                         }
                     }
                 }
-            } else {
-                Text("Not loaded")
             }
         }
+        .listStyle(.inset(alternatesRowBackgrounds: true))
     }
 }
 
