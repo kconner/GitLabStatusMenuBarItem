@@ -45,7 +45,7 @@ struct GitLabProject: Codable, Identifiable {
     }
     
     struct PageInfo: Codable {
-        let endCursor: String
+        let endCursor: String?
     }
 }
 
