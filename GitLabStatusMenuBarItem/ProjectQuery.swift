@@ -48,7 +48,7 @@ class ProjectQuery {
               id
               fullPath
               webUrl
-              pipelines(first: 5, ref: "master") {
+              pipelines(first: 5) {
                 pageInfo {
                   endCursor
                 }
@@ -56,7 +56,7 @@ class ProjectQuery {
                   \(pipelineFields)
                 }
               }
-              mergeRequests(state: opened, first: 10) {
+              mergeRequests(state: opened, first: 5) {
                 pageInfo {
                   endCursor
                 }
@@ -111,12 +111,17 @@ class ProjectQuery {
             }
             
             do {
-                // let json = String(data: data, encoding: .utf8)
-                // print(json!)
+                #if DEBUG
+                let json = String(data: data, encoding: .utf8)
+                print(json!)
+                #endif
                 
                 let response = try JSONDecoder().decode(GitLabProjectsResponse.self, from: data)
                 completion(.success(response.data.projects.nodes))
             } catch {
+                #if DEBUG
+                print(error)
+                #endif
                 completion(.failure(error))
             }
         }
@@ -161,10 +166,18 @@ class ProjectQuery {
                 return
             }
 
+            #if DEBUG
+            let json = String(data: data, encoding: .utf8)
+            print(json!)
+            #endif
+            
             do {
                 let response = try JSONDecoder().decode(GitLabSubcriptionResponse.self, from: data)
                 completion(.success(response.data.subscription))
             } catch {
+                #if DEBUG
+                print(error)
+                #endif
                 completion(.failure(error))
             }
         }
