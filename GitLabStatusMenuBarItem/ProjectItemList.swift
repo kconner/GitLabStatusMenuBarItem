@@ -28,7 +28,7 @@ struct ProjectItemList<NestedItem: Identifiable, Content: View>: View {
                         }
                     } header: {
                         Link(destination: project.webUrl) {
-                            Text(project.fullPath)
+                            Text(project.webUrl.lastPathComponent)
                         }
                     }
                 }
