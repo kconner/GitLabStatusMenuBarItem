@@ -23,7 +23,7 @@ struct PipelineRow: View {
                 NSWorkspace.shared.open(pipelineURL)
             }
         }) {
-            HStack {
+            HStack(spacing: 6) {
                 PipelineStatusView(status: pipeline.status)
                     .font(.title2)
                     .fixedSize()

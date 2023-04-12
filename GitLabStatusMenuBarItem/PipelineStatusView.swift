@@ -19,8 +19,12 @@ struct PipelineStatusView: View {
     
     func appearance(for status: PipelineStatus) -> (String, Color) {
         switch status {
-        case .created, .waitingForResource, .preparing, .pending:
+        case .created:
+            return ("dot.circle", .secondary)
+        case .waitingForResource, .preparing:
             return ("ellipsis.circle", .brown)
+        case .pending:
+            return ("pause.circle", .orange)
         case .running:
             return ("arrow.right.circle", .blue)
         case .failed:
@@ -28,11 +32,11 @@ struct PipelineStatusView: View {
         case .success:
             return ("checkmark.circle", .green)
         case .canceled:
-            return ("slash.circle", .gray)
+            return ("slash.circle", .primary)
         case .skipped:
-            return ("chevron.right.circle", .gray)
+            return ("chevron.right.circle", .secondary)
         case .manual:
-            return ("hand.raised.circle", .purple)
+            return ("gearshape.circle", .primary)
         case .scheduled:
             return ("calendar.circle", .brown)
         case .unknown:
@@ -42,12 +46,25 @@ struct PipelineStatusView: View {
 }
 
 struct PipelineStatusView_Previews: PreviewProvider {
+    
     static var previews: some View {
-        HStack(spacing: 0) {
+        VStack(spacing: 10) {
+            views()
+                .font(.title2)
+            
+            views()
+                .font(.footnote)
+                .bold()
+        }
+        .previewLayout(.sizeThatFits)
+    }
+    
+    static func views() -> some View {
+        HStack(spacing: 1) {
             ForEach(PipelineStatus.allCases) { status in
                 PipelineStatusView(status: status)
             }
         }
-        .font(.footnote)
     }
+    
 }
