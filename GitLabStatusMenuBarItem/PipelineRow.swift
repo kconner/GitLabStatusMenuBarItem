@@ -24,47 +24,49 @@ struct PipelineRow: View {
             }
         }) {
             HStack {
-                PipelineStatusView(pipeline: pipeline)
+                PipelineStatusView(status: pipeline.status)
+                    .font(.title2)
+                    .fixedSize()
                 
-                Text(pipeline.ref)
+                VStack(spacing: 2) {
+                    HStack {
+                        Text(pipeline.ref)
+                        
+                        Spacer()
+                    }
                     .font(.headline)
-                
-                Spacer()
-                
-                if pipeline.status == "not_started" {
-                    Text("Queued: \(pipeline.queuedDuration ?? 0, specifier: "%.2f")s")
-                } else {
-                    Text("Duration: \(pipeline.duration ?? 0, specifier: "%.2f")s")
-                    HStack(spacing: 4) {
+                    
+                    HStack(spacing: 1) {
+                        if let duration = pipeline.duration {
+                            Text(stringFromDuration(duration))
+                        } else if let duration = pipeline.queuedDuration {
+                            Text("queued \(stringFromDuration(duration))")
+                        }
+                        
+                        Spacer()
+                        
                         ForEach(pipeline.stages.nodes) { stage in
-                            Text(stage.status.prefix(1))
-                                .padding(4)
-                                .background(statusColor(for: stage.status))
-                                .clipShape(Circle())
-                                .foregroundColor(.white)
-                                .font(.footnote)
+                            PipelineStatusView(status: stage.status)
                         }
                     }
+                    .font(.footnote)
+                    .bold()
                 }
             }
-            .padding(.vertical, 8)
+            .padding(.vertical, 4)
         }
         .buttonStyle(PlainButtonStyle())
-
+        
     }
     
-    private func statusColor(for status: String) -> Color {
-        switch status {
-        case "success":
-            return .green
-        case "failed":
-            return .red
-        case "running":
-            return .blue
-        default:
-            return .gray
-        }
+    func stringFromDuration(_ duration: TimeInterval) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .abbreviated
+        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.zeroFormattingBehavior = .default
+        return formatter.string(from: duration) ?? ""
     }
+    
 }
 
 struct PipelineRow_Previews: PreviewProvider {

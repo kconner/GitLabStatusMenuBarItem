@@ -56,7 +56,7 @@ struct Pipeline: Codable, Identifiable {
     let ref: String
     let queuedDuration: TimeInterval?
     let duration: TimeInterval?
-    let status: String
+    let status: PipelineStatus
     let stages: Stages
     let testReportSummary: TestReportSummary?
     
@@ -65,10 +65,53 @@ struct Pipeline: Codable, Identifiable {
     }
 }
 
+enum PipelineStatus: String, CaseIterable, Codable, Identifiable {
+    
+    case created = "created"
+    case waitingForResource = "waiting_for_resource"
+    case preparing = "preparing"
+    case pending = "pending"
+    
+    case running = "running"
+    
+    case failed = "failed"
+    case success = "success"
+    case canceled = "canceled"
+    case skipped = "skipped"
+    
+    case manual = "manual"
+    
+    case scheduled = "scheduled"
+    
+    case unknown = "unknown"
+    
+    init(rawValue: String) {
+        let lowercase = rawValue.lowercased()
+        self = Self.allCases.first { $0.rawValue == lowercase } ?? .unknown
+        
+        if self == .unknown {
+            print("Unknown PipelineStatus value: \(lowercase)")
+        }
+    }
+    
+    var id: RawValue { rawValue }
+    
+    /// Whether the task is waiting for a runner to start it
+    var isQueued: Bool {
+        switch self {
+        case .created, .waitingForResource, .preparing, .pending:
+            return true
+        default:
+            return false
+        }
+    }
+    
+}
+
 struct Stage: Codable, Identifiable {
     let id: String
     let name: String
-    let status: String
+    let status: PipelineStatus
 }
 
 struct TestReportSummary: Codable {

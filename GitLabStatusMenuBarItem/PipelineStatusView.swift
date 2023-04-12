@@ -8,47 +8,46 @@
 import SwiftUI
 
 struct PipelineStatusView: View {
-    let pipeline: Pipeline
+    let status: PipelineStatus
     
     var body: some View {
-        VStack {
-            Image(systemName: statusIcon(pipeline.status))
-                .resizable()
-                .scaledToFit()
-                .frame(height: 24)
-                .foregroundColor(statusColor(pipeline.status))
-        }
+        let (icon, color) = appearance(for: status)
+        
+        Image(systemName: icon)
+            .foregroundColor(color)
     }
     
-    func statusIcon(_ status: String) -> String {
+    func appearance(for status: PipelineStatus) -> (String, Color) {
         switch status {
-        case "success":
-            return "checkmark.circle"
-        case "failed":
-            return "xmark.circle"
-        case "running":
-            return "arrow.triangle.2.circlepath.circle"
-        default:
-            return "questionmark.circle"
-        }
-    }
-    
-    func statusColor(_ status: String) -> Color {
-        switch status {
-        case "success":
-            return .green
-        case "failed":
-            return .red
-        case "running":
-            return .blue
-        default:
-            return .gray
+        case .created, .waitingForResource, .preparing, .pending:
+            return ("ellipsis.circle", .brown)
+        case .running:
+            return ("arrow.right.circle", .blue)
+        case .failed:
+            return ("xmark.circle", .red)
+        case .success:
+            return ("checkmark.circle", .green)
+        case .canceled:
+            return ("slash.circle", .gray)
+        case .skipped:
+            return ("chevron.right.circle", .gray)
+        case .manual:
+            return ("hand.raised.circle", .purple)
+        case .scheduled:
+            return ("calendar.circle", .brown)
+        case .unknown:
+            return ("questionmark.circle", .orange)
         }
     }
 }
 
 struct PipelineStatusView_Previews: PreviewProvider {
     static var previews: some View {
-        PipelineStatusView(pipeline: ProjectStore.exampleStore.projects![0].pipelines.nodes[0])
+        HStack(spacing: 0) {
+            ForEach(PipelineStatus.allCases) { status in
+                PipelineStatusView(status: status)
+            }
+        }
+        .font(.footnote)
     }
 }

@@ -16,7 +16,7 @@ struct MergeRequestRow: View {
         }) {
             HStack {
                 if let headPipeline = mergeRequest.headPipeline {
-                    PipelineStatusView(pipeline: headPipeline)
+                    PipelineStatusView(status: headPipeline.status)
                 }
                 
                 VStack(alignment: .leading, spacing: 2) {

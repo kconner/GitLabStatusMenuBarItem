@@ -18,12 +18,12 @@ extension ProjectStore {
     
     static var examplePipelines: GitLabProject.Pipelines {
         let pageInfo = GitLabProject.PageInfo(endCursor: "cursor")
-        let pipeline = Pipeline(id: "1", path: "/path", createdAt: "2023-01-01", ref: "some-ref", queuedDuration: 5, duration: 10, status: "success", stages: exampleStages, testReportSummary: exampleTestReportSummary)
+        let pipeline = Pipeline(id: "1", path: "/path", createdAt: "2023-01-01", ref: "some-ref", queuedDuration: 5, duration: 10, status: .success, stages: exampleStages, testReportSummary: exampleTestReportSummary)
         return GitLabProject.Pipelines(pageInfo: pageInfo, nodes: [pipeline])
     }
     
     static var exampleStages: Pipeline.Stages {
-        let stage = Stage(id: "one", name: "Build", status: "success")
+        let stage = Stage(id: "one", name: "Build", status: .success)
         return Pipeline.Stages(nodes: [stage])
     }
     
