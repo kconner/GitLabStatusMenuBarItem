@@ -48,7 +48,7 @@ class ProjectQuery {
               id
               fullPath
               webUrl
-              pipelines(first: 5) {
+              pipelines(first: 10) {
                 pageInfo {
                   endCursor
                 }
@@ -68,6 +68,7 @@ class ProjectQuery {
                   createdAt
                   author {
                     username
+                    avatarUrl
                   }
                   sourceBranch
                   headPipeline {

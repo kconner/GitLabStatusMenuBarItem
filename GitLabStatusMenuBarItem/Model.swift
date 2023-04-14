@@ -139,6 +139,7 @@ struct MergeRequest: Codable, Identifiable {
     
     struct Author: Codable {
         let username: String
+        let avatarUrl: URL?
     }
     
     struct ApprovedBy: Codable {

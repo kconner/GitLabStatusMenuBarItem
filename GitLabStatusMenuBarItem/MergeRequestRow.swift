@@ -8,86 +8,91 @@
 import SwiftUI
 
 struct MergeRequestRow: View {
+    
     let mergeRequest: MergeRequest
     
     var body: some View {
-        Button(action: {
+        Button {
             NSWorkspace.shared.open(mergeRequest.webUrl)
-        }) {
-            HStack {
-                if let headPipeline = mergeRequest.headPipeline {
-                    PipelineStatusView(status: headPipeline.status)
-                }
+        } label: {
+            HStack(spacing: 6) {
+                AvatarView(avatar: mergeRequest.author.avatarUrl, relativeTo: mergeRequest.webUrl)
+                    .font(.title2)
                 
-                VStack(alignment: .leading, spacing: 2) {
-                    Label {
+                VStack(spacing: 2) {
+                    HStack {
                         Text(mergeRequest.title)
-                    } icon: {
-                        if mergeRequest.draft {
-                            Image(systemName: "pencil.circle")
-                                .foregroundColor(Color.orange)
-                        }
+                            .foregroundColor(.primary)
+                        
+                        Spacer()
                     }
                     .font(.headline)
 
-                    HStack {
-                        Text(mergeRequest.author.username)
-                            .font(.footnote)
-                            .foregroundColor(.gray)
+                    HStack(alignment: .firstTextBaseline, spacing: 2) {
+                        PipelineStatusView(status: mergeRequest.headPipeline?.status ?? .canceled)
                         
                         Text(mergeRequest.sourceBranch)
-                            .font(.footnote)
-                            .foregroundColor(.gray)
-                    }
-                }
-                
-                Spacer()
-                
-                if mergeRequest.approvalsLeft == 0 && !mergeRequest.shouldBeRebased {
-                    Image(systemName: "checkmark.circle")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: 24)
-                        .foregroundColor(Color.green)
-                } else if mergeRequest.approvalsLeft == 0 && mergeRequest.shouldBeRebased {
-                    Image(systemName: "arrow.clockwise.circle")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: 24)
-                        .foregroundColor(Color.blue)
-                } else {
-                    Text("\(mergeRequest.approvalsLeft)")
-                        .font(.headline)
-                        .foregroundColor(.red)
-                }
-                
-                HStack {
-                    ForEach(mergeRequest.approvedBy.nodes, id: \.username) { approver in
-                        if let avatarUrl = approver.avatarUrl {
-                            AsyncImage(url: avatarUrl) { phase in
-                                if let image = phase.image {
-                                    image
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 24, height: 24)
-                                        .clipShape(Circle())
-                                } else {
-                                    Circle()
-                                        .fill(Color.gray)
-                                        .frame(width: 24, height: 24)
+                            .foregroundColor(.secondary)
+                        
+                        Spacer()
+                        
+                        if mergeRequest.draft {
+                            Image(systemName: "pencil.and.outline")
+                                .foregroundColor(.brown)
+                        } else {
+                            if mergeRequest.approvalsLeft == 0 && mergeRequest.shouldBeRebased {
+                                Text("rebase")
+                                    .foregroundColor(.orange)
+                            }
+                            
+                            HStack(spacing: 1) {
+                                ForEach(0..<mergeRequest.approvalsLeft, id: \.self) { _ in
+                                    Image(systemName: "circle")
+                                        .foregroundColor(.orange)
+                                }
+                                
+                                ForEach(mergeRequest.approvedBy.nodes, id: \.username) { approver in
+                                    AvatarView(avatar: approver.avatarUrl, relativeTo: mergeRequest.webUrl)
                                 }
                             }
-                        } else {
-                            Circle()
-                                .fill(Color.gray)
-                                .frame(width: 24, height: 24)
+                        }
+                    }
+                    .font(.footnote)
+                    .bold()
+                }
+            }
+            .padding(.vertical, 4)
+        }
+        .buttonStyle(PlainButtonStyle())
+    }
+    
+}
+
+struct AvatarView: View {
+    
+    private var url: URL?
+    
+    init(avatar: URL?, relativeTo basis: URL?) {
+        url = avatar.flatMap {
+            URL(string: $0.path, relativeTo: basis)
+        }
+    }
+    
+    var body: some View {
+        Image(systemName: "person.circle")
+            .foregroundColor(.secondary)
+            .overlay {
+                if let url {
+                    AsyncImage(url: url) { phase in
+                        if let image = phase.image {
+                            image
+                                .resizable()
+                                .scaledToFit()
+                                .clipShape(Circle())
                         }
                     }
                 }
             }
-            .padding(.vertical, 8)
-        }
-        .buttonStyle(PlainButtonStyle())
     }
 }
 

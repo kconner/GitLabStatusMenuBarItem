@@ -19,11 +19,11 @@ struct PipelineRow: View {
     }
     
     var body: some View {
-        Button(action: {
+        Button {
             if let pipelineURL {
                 NSWorkspace.shared.open(pipelineURL)
             }
-        }) {
+        } label: {
             HStack(spacing: 6) {
                 PipelineStatusView(status: pipeline.status)
                     .font(.title2)
@@ -37,19 +37,23 @@ struct PipelineRow: View {
                     }
                     .font(.headline)
                         
-                    HStack(alignment: .firstTextBaseline) {
-                        if let duration = pipeline.duration {
-                            Text(stringFromDuration(duration))
-                        } else if let duration = pipeline.queuedDuration {
-                            Text("queued \(stringFromDuration(duration))")
+                    HStack(alignment: .firstTextBaseline, spacing: 2) {
+                        Group {
+                            if let duration = pipeline.duration {
+                                Text(stringFromDuration(duration))
+                            } else if let duration = pipeline.queuedDuration {
+                                Text("queued \(stringFromDuration(duration))")
+                            }
                         }
+                        .foregroundColor(.secondary)
+                        
                         
                         Spacer()
                         
                         if let testReportSummary = pipeline.testReportSummary,
                            testReportSummary.total.failed > 0
                         {
-                            Text("\(testReportSummary.total.failed) tests failed")
+                            Text("\(testReportSummary.total.failed) tests")
                                 .foregroundColor(.red)
                         }
                         

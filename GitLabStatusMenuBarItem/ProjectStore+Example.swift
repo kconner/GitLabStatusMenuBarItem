@@ -34,7 +34,7 @@ extension ProjectStore {
     
     static var exampleMergeRequests: GitLabProject.MergeRequests {
         let pageInfo = GitLabProject.PageInfo(endCursor: "cursor")
-        let author = MergeRequest.Author(username: "user1")
+        let author = MergeRequest.Author(username: "user1", avatarUrl: URL(string: "https://example.com/avatar")!)
         let approvedBy = MergeRequest.ApprovedBy(nodes: [Approver(username: "user2", avatarUrl: URL(string: "https://example.com/avatar")!)])
         let mergeRequest = MergeRequest(id: "1", webUrl: URL(string: "https://example.com/mr")!, draft: false, title: "Example Merge Request", createdAt: "2023-01-01", author: author, sourceBranch: "feature/foo", headPipeline: examplePipelines.nodes[0], approvalsLeft: 1, approvedBy: approvedBy, shouldBeRebased: false)
         return GitLabProject.MergeRequests(pageInfo: pageInfo, nodes: [mergeRequest])
