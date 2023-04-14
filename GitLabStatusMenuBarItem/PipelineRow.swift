@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct PipelineRow: View {
+    
     let projectURL: URL
     let pipeline: Pipeline
     
@@ -35,8 +36,8 @@ struct PipelineRow: View {
                         Spacer()
                     }
                     .font(.headline)
-                    
-                    HStack(spacing: 1) {
+                        
+                    HStack(alignment: .firstTextBaseline) {
                         if let duration = pipeline.duration {
                             Text(stringFromDuration(duration))
                         } else if let duration = pipeline.queuedDuration {
@@ -45,8 +46,17 @@ struct PipelineRow: View {
                         
                         Spacer()
                         
-                        ForEach(pipeline.stages.nodes) { stage in
-                            PipelineStatusView(status: stage.status)
+                        if let testReportSummary = pipeline.testReportSummary,
+                           testReportSummary.total.failed > 0
+                        {
+                            Text("\(testReportSummary.total.failed) tests failed")
+                                .foregroundColor(.red)
+                        }
+                        
+                        HStack(spacing: 1) {
+                            ForEach(pipeline.stages.nodes) { stage in
+                                PipelineStatusView(status: stage.status)
+                            }
                         }
                     }
                     .font(.footnote)
