@@ -32,14 +32,18 @@ struct ProjectsToolbar: View {
                     Button("Subscriptions") {
                         showSubscriptionsView.toggle()
                     }
+                    .keyboardShortcut(nil)
+                    
                     Button("GitLab Token") {
                         showingTokenSheet = true
                     }
+                    .keyboardShortcut(nil)
                 }
                 Section {
                     Button("Quit") {
                         NSApp.terminate(nil)
                     }
+                    .keyboardShortcut(nil)
                 }
             } label: {
                 if store.isLoading {
@@ -50,6 +54,7 @@ struct ProjectsToolbar: View {
             } primaryAction: {
                 store.refreshData()
             }
+            .keyboardShortcut(KeyEquivalent("r"), modifiers: .command)
             .fixedSize()
         }
         .sheet(isPresented: $showSubscriptionsView) {

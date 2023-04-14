@@ -11,7 +11,8 @@ extension ProjectStore {
     static var exampleStore: ProjectStore {
         let store = ProjectStore()
         store.projects = [
-            GitLabProject(id: "1", fullPath: "Example Project", webUrl: URL(string: "https://example.com")!, pipelines: examplePipelines, mergeRequests: exampleMergeRequests)
+            GitLabProject(id: "1", fullPath: "Example Project", webUrl: URL(string: "https://example.com")!, pipelines: examplePipelines, mergeRequests: exampleMergeRequests),
+            GitLabProject(id: "2", fullPath: "Empty Project", webUrl: URL(string: "https://example.com")!, pipelines: emptyPipelines, mergeRequests: emptyMergeRequests)
         ]
         return store
     }
@@ -20,6 +21,11 @@ extension ProjectStore {
         let pageInfo = GitLabProject.PageInfo(endCursor: "cursor")
         let pipeline = Pipeline(id: "1", path: "/path", createdAt: "2023-01-01", ref: "some-ref", queuedDuration: 5, duration: 10, status: .success, stages: exampleStages, testReportSummary: exampleTestReportSummary)
         return GitLabProject.Pipelines(pageInfo: pageInfo, nodes: [pipeline])
+    }
+    
+    static var emptyPipelines: GitLabProject.Pipelines {
+        let pageInfo = GitLabProject.PageInfo(endCursor: "cursor")
+        return GitLabProject.Pipelines(pageInfo: pageInfo, nodes: [])
     }
     
     static var exampleStages: Pipeline.Stages {
@@ -38,5 +44,10 @@ extension ProjectStore {
         let approvedBy = MergeRequest.ApprovedBy(nodes: [Approver(username: "user2", avatarUrl: URL(string: "https://example.com/avatar")!)])
         let mergeRequest = MergeRequest(id: "1", webUrl: URL(string: "https://example.com/mr")!, draft: false, title: "Example Merge Request", createdAt: "2023-01-01", author: author, sourceBranch: "feature/foo", headPipeline: examplePipelines.nodes[0], approvalsLeft: 1, approvedBy: approvedBy, shouldBeRebased: false)
         return GitLabProject.MergeRequests(pageInfo: pageInfo, nodes: [mergeRequest])
+    }
+    
+    static var emptyMergeRequests: GitLabProject.MergeRequests {
+        let pageInfo = GitLabProject.PageInfo(endCursor: "cursor")
+        return GitLabProject.MergeRequests(pageInfo: pageInfo, nodes: [])
     }
 }

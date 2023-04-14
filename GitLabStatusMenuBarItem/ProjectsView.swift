@@ -32,14 +32,16 @@ struct ProjectsView: View {
                 case .mergeRequests:
                     ProjectItemList(
                         projects: store.projects,
-                        nestedItemsKeyPath: \.mergeRequests.nodes
+                        nestedItemsKeyPath: \.mergeRequests.nodes,
+                        emptyListMark: "No merge requests"
                     ) { _, mergeRequest in
                         MergeRequestRow(mergeRequest: mergeRequest)
                     }
                 case .pipelines:
                     ProjectItemList(
                         projects: store.projects,
-                        nestedItemsKeyPath: \.pipelines.nodes
+                        nestedItemsKeyPath: \.pipelines.nodes,
+                        emptyListMark: "No pipeline runs"
                     ) { project, pipeline in
                         PipelineRow(projectURL: project.webUrl, pipeline: pipeline)
                     }

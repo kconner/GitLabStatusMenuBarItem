@@ -10,11 +10,13 @@ import SwiftUI
 struct ProjectItemList<NestedItem: Identifiable, Content: View>: View {
     var projects: [GitLabProject]?
     var nestedItemsKeyPath: KeyPath<GitLabProject, [NestedItem]>
+    var emptyListMark: String
     var content: (GitLabProject, NestedItem) -> Content
 
-    init(projects: [GitLabProject]?, nestedItemsKeyPath: KeyPath<GitLabProject, [NestedItem]>, @ViewBuilder content: @escaping (GitLabProject, NestedItem) -> Content) {
+    init(projects: [GitLabProject]?, nestedItemsKeyPath: KeyPath<GitLabProject, [NestedItem]>, emptyListMark: String, @ViewBuilder content: @escaping (GitLabProject, NestedItem) -> Content) {
         self.projects = projects
         self.nestedItemsKeyPath = nestedItemsKeyPath
+        self.emptyListMark = emptyListMark
         self.content = content
     }
 
@@ -23,8 +25,21 @@ struct ProjectItemList<NestedItem: Identifiable, Content: View>: View {
             if let projects {
                 ForEach(projects) { project in
                     Section {
-                        ForEach(project[keyPath: nestedItemsKeyPath]) { nestedItem in
-                            content(project, nestedItem)
+                        if project[keyPath: nestedItemsKeyPath].isEmpty {
+                            HStack {
+                                Spacer()
+                                
+                                Text(emptyListMark)
+                                    .font(.body)
+                                    .foregroundColor(.secondary)
+                                
+                                Spacer()
+                            }
+                            .padding(.vertical, 4)
+                        } else {
+                            ForEach(project[keyPath: nestedItemsKeyPath]) { nestedItem in
+                                content(project, nestedItem)
+                            }
                         }
                     } header: {
                         Link(destination: project.webUrl) {
@@ -47,14 +62,16 @@ struct ProjectItemList_Previews: PreviewProvider {
         Group {
             ProjectItemList(
                 projects: store.projects,
-                nestedItemsKeyPath: \.mergeRequests.nodes
+                nestedItemsKeyPath: \.mergeRequests.nodes,
+                emptyListMark: "No merge requests"
             ) { _, mergeRequest in
                 MergeRequestRow(mergeRequest: mergeRequest)
             }
 
             ProjectItemList(
                 projects: store.projects,
-                nestedItemsKeyPath: \.pipelines.nodes
+                nestedItemsKeyPath: \.pipelines.nodes,
+                emptyListMark: "No pipeline runs"
             ) { project, pipeline in
                 PipelineRow(projectURL: project.webUrl, pipeline: pipeline)
             }

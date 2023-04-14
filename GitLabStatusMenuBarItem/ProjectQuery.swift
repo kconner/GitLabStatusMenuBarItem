@@ -48,7 +48,7 @@ class ProjectQuery {
               id
               fullPath
               webUrl
-              pipelines(first: 10) {
+              pipelines(first: 5) {
                 pageInfo {
                   endCursor
                 }
@@ -56,7 +56,7 @@ class ProjectQuery {
                   \(pipelineFields)
                 }
               }
-              mergeRequests(state: opened, first: 5) {
+              mergeRequests(state: opened, first: 10) {
                 pageInfo {
                   endCursor
                 }

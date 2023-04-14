@@ -42,13 +42,13 @@ struct MergeRequestRow: View {
                         } else {
                             if mergeRequest.approvalsLeft == 0 && mergeRequest.shouldBeRebased {
                                 Text("rebase")
-                                    .foregroundColor(.orange)
+                                    .foregroundColor(.red)
                             }
                             
                             HStack(spacing: 1) {
                                 ForEach(0..<mergeRequest.approvalsLeft, id: \.self) { _ in
                                     Image(systemName: "circle")
-                                        .foregroundColor(.orange)
+                                        .foregroundColor(.red)
                                 }
                                 
                                 ForEach(mergeRequest.approvedBy.nodes, id: \.username) { approver in
@@ -89,6 +89,7 @@ struct AvatarView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .clipShape(Circle())
+                                .padding(1)
                         }
                     }
                 }
