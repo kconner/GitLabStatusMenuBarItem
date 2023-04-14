@@ -33,13 +33,16 @@ struct SubscriptionsSheet: View {
             }
             .padding(.horizontal)
             
-            List(subscriptions, selection: $selection) { subscription in
-                HStack {
+            List(selection: $selection) {
+                ForEach(subscriptions) { subscription in
                     Text(subscription.fullPath)
+                }
+                .onMove { offsets, destination in
+                    moveSubscriptions(at: offsets, to: destination)
                 }
             }
             .onDeleteCommand {
-                removeSelectedSubscriptions()
+                deleteSelectedSubscriptions()
             }
             .listStyle(.inset(alternatesRowBackgrounds: true))
             
@@ -76,7 +79,13 @@ struct SubscriptionsSheet: View {
         .frame(width: 300, height: 300)
     }
     
-    func removeSelectedSubscriptions() {
+    func moveSubscriptions(at offsets: IndexSet, to destination: Int) {
+        var newValue = subscriptions
+        newValue.move(fromOffsets: offsets, toOffset: destination)
+        setSubscriptions(newValue)
+    }
+    
+    func deleteSelectedSubscriptions() {
         let newValue = subscriptions.filter { subscription in
             !selection.contains(subscription.id)
         }
