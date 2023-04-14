@@ -54,12 +54,25 @@ class ProjectStore: ObservableObject {
                 
                 switch result {
                 case .success(let data):
-                    self.projects = data
+                    self.projects = Self.orderedProjects(data, bySubscription: subscriptionIDs)
                     self.errorMessage = nil
                 case .failure(let error):
                     self.errorMessage = "Error fetching GitLab data: \(error)"
                 }
             }
+        }
+    }
+    
+    private static func orderedProjects(_ projects: [GitLabProject], bySubscription subscriptionIDs: [String]) -> [GitLabProject] {
+        let offsetById = Dictionary(
+            uniqueKeysWithValues: projects.enumerated().map { offset, element in
+                (element.id, offset)
+            }
+        )
+        
+        return subscriptionIDs.compactMap { id in
+            guard let index = offsetById[id] else { return nil }
+            return projects[index]
         }
     }
     
