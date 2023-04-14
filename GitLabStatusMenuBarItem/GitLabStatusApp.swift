@@ -20,8 +20,8 @@ struct GitLabStatusApp: App {
         MenuBarExtra {
             ProjectsView()
                 .environmentObject(store)
-            } label: {
-            Image(systemName: "target")
+        } label: {
+            Image(systemName: "square.stack.3d.forward.dottedline.fill")
         }
         .menuBarExtraStyle(.window)
     }
