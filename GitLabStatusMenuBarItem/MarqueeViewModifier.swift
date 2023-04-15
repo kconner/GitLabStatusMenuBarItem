@@ -38,7 +38,10 @@ struct MarqueeText: View {
     }
 }
 
+import SwiftUI
+
 struct MarqueeViewModifier: ViewModifier {
+    @FocusState private var isFocused: Bool
     let mode: MarqueeAnimationMode
     let text: String
     let font: Font
@@ -63,12 +66,14 @@ struct MarqueeViewModifier: ViewModifier {
                         animate.toggle()
                     }
                 }
-                .focusable(mode == .whileFocused)
-                .onFocusChange { focused in
+                .onChange(of: isFocused) { focused in
                     if mode == .whileFocused {
                         animate = focused
                     }
                 }
+                .focusable(mode == .whileFocused, onFocusChange: { focused in
+                    isFocused = focused
+                })
         }
     }
 }
