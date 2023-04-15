@@ -38,12 +38,7 @@ struct MarqueeText: View {
     }
 }
 
-import SwiftUI
-
-import SwiftUI
-
 struct MarqueeViewModifier: ViewModifier {
-    @FocusState private var isFocused: Bool
     let mode: MarqueeAnimationMode
     let text: String
     let font: Font
@@ -53,6 +48,7 @@ struct MarqueeViewModifier: ViewModifier {
     let spacing: CGFloat
     let velocity: CGFloat
 
+    @FocusState private var isFocused: Bool
     @State private var animate: Bool = false
 
     func body(content: Content) -> some View {
@@ -74,7 +70,7 @@ struct MarqueeViewModifier: ViewModifier {
                         }
                     }
                 }
-                .focused(mode == .whileFocused ? .init(rawValue: "marquee") : nil, equals: isFocused)
+                .focused(mode == .whileFocused ? focusBinding() : nil)
         }
     }
     
@@ -82,6 +78,13 @@ struct MarqueeViewModifier: ViewModifier {
         Animation.linear(duration: Double(geometry.size.width + spacing) / Double(velocity))
             .repeatCount(iterations, autoreverses: false)
             .delay(Double(initialDelayMillis) / 1000.0)
+    }
+    
+    private func focusBinding() -> FocusState<Bool>.Binding {
+        Binding<Bool>(
+            get: { isFocused },
+            set: { isFocused = $0 }
+        )
     }
 }
 
