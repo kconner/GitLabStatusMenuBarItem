@@ -17,6 +17,10 @@ struct GitLabStatusApp: App {
     }
 
     var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+        
         MenuBarExtra {
             ProjectsView()
                 .environmentObject(store)
