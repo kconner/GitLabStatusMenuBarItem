@@ -40,6 +40,8 @@ struct MarqueeText: View {
 
 import SwiftUI
 
+import SwiftUI
+
 struct MarqueeViewModifier: ViewModifier {
     @FocusState private var isFocused: Bool
     let mode: MarqueeAnimationMode
@@ -58,23 +60,28 @@ struct MarqueeViewModifier: ViewModifier {
             MarqueeText(text: text, font: font)
                 .clipped()
                 .offset(x: animate ? -geometry.size.width - spacing : 0)
-                .animation(Animation.linear(duration: Double(geometry.size.width + spacing) / Double(velocity))
-                                .repeatCount(iterations, autoreverses: false)
-                                .delay(Double(initialDelayMillis) / 1000.0))
                 .onAppear {
                     if mode == .immediately {
-                        animate.toggle()
+                        withAnimation(createAnimation(for: geometry)) {
+                            animate.toggle()
+                        }
                     }
                 }
                 .onChange(of: isFocused) { focused in
                     if mode == .whileFocused {
-                        animate = focused
+                        withAnimation(createAnimation(for: geometry)) {
+                            animate = focused
+                        }
                     }
                 }
-                .focusable(mode == .whileFocused, onFocusChange: { focused in
-                    isFocused = focused
-                })
+                .focused(mode == .whileFocused ? .init(rawValue: "marquee") : nil, equals: isFocused)
         }
+    }
+    
+    private func createAnimation(for geometry: GeometryProxy) -> Animation {
+        Animation.linear(duration: Double(geometry.size.width + spacing) / Double(velocity))
+            .repeatCount(iterations, autoreverses: false)
+            .delay(Double(initialDelayMillis) / 1000.0)
     }
 }
 
