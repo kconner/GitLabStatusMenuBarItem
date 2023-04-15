@@ -10,15 +10,25 @@ import SwiftUI
 struct MarqueeModifier: ViewModifier {
     let availableWidth: CGFloat
     let spacing: CGFloat
-    let speedFactor: SpeedFactor
+    let delay: TimeInterval
+    let speedBasis: SpeedBasis
     
-    enum SpeedFactor {
-        case duration(TimeInterval)
+    enum SpeedBasis {
+        case period(TimeInterval)
         case velocity(CGFloat)
+        
+        func duration(distance: CGFloat) -> TimeInterval {
+            switch self {
+            case .period(let seconds):
+                return seconds
+            case .velocity(let pointsPerSecond):
+                return distance / pointsPerSecond
+            }
+        }
     }
     
     @State private var contentWidth: CGFloat?
-    @State private var animate: Bool = false
+    @State private var offset: CGFloat = 0
     
     func body(content: Content) -> some View {
         VStack(alignment: .leading) {
@@ -42,19 +52,19 @@ struct MarqueeModifier: ViewModifier {
                     content
                         .fixedSize()
                         .onAppear {
-                            withAnimation(Animation.linear(duration: 3).repeatForever(autoreverses: false)) {
-                                animate = true
+                            withAnimation(
+                                Animation.linear(duration: speedBasis.duration(distance: contentWidth + spacing))
+                                    .delay(delay)
+                                    .repeatForever(autoreverses: false)
+                            ) {
+                                offset = -(contentWidth + spacing)
                             }
                         }
                 }
             }
-            .offset(
-                x: animate && (contentWidth ?? 0) > availableWidth
-                    ? -(contentWidth ?? 0) - spacing
-                    : 0
-            )
+            .offset(x: offset)
         }
-        .frame(width: 200, alignment: .leading)
+        .frame(width: availableWidth, alignment: .leading)
         .clipped()
     }
 }
@@ -71,13 +81,15 @@ extension View {
     func marquee(
         availableWidth: CGFloat,
         spacing: CGFloat = 10,
-        speedFactor: MarqueeModifier.SpeedFactor = .velocity(100)
+        delay: TimeInterval = 0,
+        speedBasis: MarqueeModifier.SpeedBasis = .velocity(50)
     ) -> some View {
         self.modifier(
             MarqueeModifier(
                 availableWidth: availableWidth,
                 spacing: spacing,
-                speedFactor: speedFactor
+                delay: delay,
+                speedBasis: speedBasis
             )
         )
     }
@@ -87,12 +99,13 @@ struct ContentView: View {
     var body: some View {
         VStack {
             Text("This shouldn't animate.")
+                .padding(5)
                 .marquee(availableWidth: 200)
                 .background(Color.red)
 
             Text("This is a very long text that should animate horizontally.")
-                .marquee(availableWidth: 200)
-                .frame(width: 200, alignment: .leading)
+                .padding(5)
+                .marquee(availableWidth: 200, delay: 2)
                 .background(Color.yellow)
             
             HStack(spacing: 20) {
@@ -111,7 +124,7 @@ struct ContentView: View {
                     .padding(4)
                 }
             }
-            .marquee(availableWidth: 150, spacing: 30)
+            .marquee(availableWidth: 200, spacing: 20)
             .background(Color.black)
         }
     }
