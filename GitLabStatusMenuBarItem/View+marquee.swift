@@ -74,58 +74,59 @@ struct MarqueeModifier: ViewModifier {
 
 extension View {
     func marquee(
+        availableWidth: CGFloat,
         spacing: CGFloat = 10,
         delay: TimeInterval = 0,
         speedBasis: MarqueeModifier.SpeedBasis = .velocity(50)
     ) -> some View {
-        GeometryReader { geometry in
             self.modifier(
                 MarqueeModifier(
-                    availableWidth: geometry.size.width,
+                    availableWidth: availableWidth,
                     spacing: spacing,
                     delay: delay,
                     speedBasis: speedBasis
                 )
             )
-        }
     }
 }
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Text("Short; usually avoids animating.")
-                .padding(5)
-                .marquee()
-                .background(Color.red)
-
-            Text("This text pauses at the beginning of each loop of its animation.")
-                .font(.headline)
-                .padding(5)
-                .marquee(delay: 2)
-                .background(Color.yellow)
-            
-            HStack(spacing: 20) {
-                ForEach(["One", "Two", "Three", "Four"], id: \.self) { title in
-                    HStack(spacing: 5) {
-                        Image(systemName: "number.circle")
-                        Text(title)
+        GeometryReader { geometry in
+            VStack {
+                Text("Short; usually avoids animating.")
+                    .padding(5)
+                    .marquee(availableWidth: geometry.size.width)
+                    .background(Color.red)
+                
+                Text("This text pauses at the beginning of each loop of its animation.")
+                    .font(.headline)
+                    .padding(5)
+                    .marquee(availableWidth: geometry.size.width, delay: 2)
+                    .background(Color.yellow)
+                
+                HStack(spacing: 20) {
+                    ForEach(["One", "Two", "Three", "Four"], id: \.self) { title in
+                        HStack(spacing: 5) {
+                            Image(systemName: "number.circle")
+                            Text(title)
+                        }
+                        .font(.title3.bold())
+                        .padding(.vertical, 3)
+                        .padding(.horizontal, 6)
+                        .frame(width: 150, alignment: .leading)
+                        .background(
+                            RoundedRectangle(cornerRadius: 5, style: .continuous)
+                                .fill(.mint)
+                        )
+                        .padding(4)
                     }
-                    .font(.title3.bold())
-                    .padding(.vertical, 3)
-                    .padding(.horizontal, 6)
-                    .frame(width: 150, alignment: .leading)
-                    .background(
-                        RoundedRectangle(cornerRadius: 5, style: .continuous)
-                            .fill(.mint)
-                    )
-                    .padding(4)
                 }
+                .marquee(availableWidth: geometry.size.width, spacing: 20, speedBasis: .period(4))
+                .background(Color.black)
+                
+                Spacer()
             }
-            .marquee(spacing: 20, speedBasis: .period(4))
-            .background(Color.black)
-            
-            Spacer()
         }
     }
 }
