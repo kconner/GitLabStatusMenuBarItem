@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2CD00F8C29EB497200752F8B /* MarqueeViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD00F8B29EB497200752F8B /* MarqueeViewModifier.swift */; };
 		2CF021F029E1F1220029675E /* GitLabStatusApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF021EF29E1F1220029675E /* GitLabStatusApp.swift */; };
 		2CF021F429E1F1230029675E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2CF021F329E1F1230029675E /* Assets.xcassets */; };
 		2CF021F729E1F1230029675E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2CF021F629E1F1230029675E /* Preview Assets.xcassets */; };
@@ -47,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2CD00F8B29EB497200752F8B /* MarqueeViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarqueeViewModifier.swift; sourceTree = "<group>"; };
 		2CF021EC29E1F1220029675E /* GitLabStatusMenuBarItem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitLabStatusMenuBarItem.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CF021EF29E1F1220029675E /* GitLabStatusApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitLabStatusApp.swift; sourceTree = "<group>"; };
 		2CF021F329E1F1230029675E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				2CF0223829E212F50029675E /* MergeRequestRow.swift */,
 				2CF0223C29E213240029675E /* PipelineRow.swift */,
 				2CF0224029E21E850029675E /* PipelineStatusView.swift */,
+				2CD00F8B29EB497200752F8B /* MarqueeViewModifier.swift */,
 			);
 			path = GitLabStatusMenuBarItem;
 			sourceTree = "<group>";
@@ -325,6 +328,7 @@
 				2CF021F029E1F1220029675E /* GitLabStatusApp.swift in Sources */,
 				2CF0223D29E213240029675E /* PipelineRow.swift in Sources */,
 				2CF0223F29E213B10029675E /* ProjectStore+Example.swift in Sources */,
+				2CD00F8C29EB497200752F8B /* MarqueeViewModifier.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
