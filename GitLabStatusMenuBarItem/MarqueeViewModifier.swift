@@ -12,19 +12,47 @@ enum MarqueeAnimationMode {
     case whileFocused
 }
 
+struct MarqueeText: View {
+    let text: String
+    let font: Font
+
+    @State private var textSize: CGSize = .zero
+
+    var body: some View {
+        Text(text)
+            .font(font)
+            .background(GeometryReader { geometryProxy in
+                Color.clear.preference(key: SizePreferenceKey.self, value: geometryProxy.size)
+            })
+            .onPreferenceChange(SizePreferenceKey.self) { size in
+                textSize = size
+            }
+            .frame(width: textSize.width, height: textSize.height, alignment: .leading)
+    }
+
+    private struct SizePreferenceKey: PreferenceKey {
+        static var defaultValue: CGSize = .zero
+        static func reduce(value: inout CGSize, nextValue: () -> CGSize) {
+            value = nextValue()
+        }
+    }
+}
+
 struct MarqueeViewModifier: ViewModifier {
-    @State private var animate: Bool = false
     let mode: MarqueeAnimationMode
+    let text: String
+    let font: Font
     let iterations: Int
     let delayMillis: Int
     let initialDelayMillis: Int
     let spacing: CGFloat
     let velocity: CGFloat
 
+    @State private var animate: Bool = false
+
     func body(content: Content) -> some View {
         GeometryReader { geometry in
-            content
-                .measure(width: geometry.size.width)
+            MarqueeText(text: text, font: font)
                 .clipped()
                 .offset(x: animate ? -geometry.size.width - spacing : 0)
                 .animation(Animation.linear(duration: Double(geometry.size.width + spacing) / Double(velocity))
@@ -47,12 +75,16 @@ struct MarqueeViewModifier: ViewModifier {
 
 extension View {
     func marquee(mode: MarqueeAnimationMode = .immediately,
+                 text: String,
+                 font: Font = .body,
                  iterations: Int = Int.max,
                  delayMillis: Int = 1000,
                  initialDelayMillis: Int = 0,
                  spacing: CGFloat = 0,
                  velocity: CGFloat = 50) -> some View {
         self.modifier(MarqueeViewModifier(mode: mode,
+                                          text: text,
+                                          font: font,
                                           iterations: iterations,
                                           delayMillis: delayMillis,
                                           initialDelayMillis: initialDelayMillis,
@@ -63,8 +95,12 @@ extension View {
 
 struct MarqueeViewModifier_Previews: PreviewProvider {
     static var previews: some View {
-        Text("Hello, World!")
-            .marquee(mode: .whileFocused, iterations: 2, delayMillis: 1000, initialDelayMillis: 500, spacing: 100, velocity: 100)
-            .frame(width: 100)
+        VStack {
+            Spacer()
+            Text("Hello, World!")
+                .marquee(mode: .whileFocused, text: "Hello, World!", iterations: 2, delayMillis: 1000, initialDelayMillis: 500, spacing: 100, velocity: 100)
+                .frame(width: 100)
+            Spacer()
+        }
     }
 }
