@@ -32,7 +32,7 @@ struct MarqueeModifier: ViewModifier {
     
     func body(content: Content) -> some View {
         VStack(alignment: .leading) {
-            HStack {
+            HStack(spacing: spacing) {
                 content
                     .fixedSize()
                     .background(
@@ -47,8 +47,6 @@ struct MarqueeModifier: ViewModifier {
                     )
                 
                 if let contentWidth, contentWidth > availableWidth {
-                    Spacer(minLength: spacing)
-                    
                     content
                         .fixedSize()
                         .onAppear {
@@ -60,6 +58,11 @@ struct MarqueeModifier: ViewModifier {
                                 offset = -(contentWidth + spacing)
                             }
                         }
+                        .onDisappear {
+                            withAnimation(.linear(duration: 0)) {
+                                offset = 0
+                            }
+                        }
                 }
             }
             .offset(x: offset)
@@ -69,54 +72,49 @@ struct MarqueeModifier: ViewModifier {
     }
 }
 
-struct MarqueePreferenceKey: PreferenceKey {
-    static var defaultValue: CGFloat = 0.0
-
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = nextValue()
-    }
-}
-
 extension View {
     func marquee(
-        availableWidth: CGFloat,
         spacing: CGFloat = 10,
         delay: TimeInterval = 0,
         speedBasis: MarqueeModifier.SpeedBasis = .velocity(50)
     ) -> some View {
-        self.modifier(
-            MarqueeModifier(
-                availableWidth: availableWidth,
-                spacing: spacing,
-                delay: delay,
-                speedBasis: speedBasis
+        GeometryReader { geometry in
+            self.modifier(
+                MarqueeModifier(
+                    availableWidth: geometry.size.width,
+                    spacing: spacing,
+                    delay: delay,
+                    speedBasis: speedBasis
+                )
             )
-        )
+        }
     }
 }
 
 struct ContentView: View {
     var body: some View {
         VStack {
-            Text("This shouldn't animate.")
+            Text("Short; usually avoids animating.")
                 .padding(5)
-                .marquee(availableWidth: 200)
+                .marquee()
                 .background(Color.red)
 
-            Text("This is a very long text that should animate horizontally.")
+            Text("This text pauses at the beginning of each loop of its animation.")
+                .font(.headline)
                 .padding(5)
-                .marquee(availableWidth: 200, delay: 2)
+                .marquee(delay: 2)
                 .background(Color.yellow)
             
             HStack(spacing: 20) {
-                ForEach(["One Mississippi", "Two Mississippi", "Three Mississippi", "Umpteen Mississippi"], id: \.self) { title in
+                ForEach(["One", "Two", "Three", "Four"], id: \.self) { title in
                     HStack(spacing: 5) {
                         Image(systemName: "number.circle")
                         Text(title)
                     }
-                    .font(.title3)
+                    .font(.title3.bold())
                     .padding(.vertical, 3)
                     .padding(.horizontal, 6)
+                    .frame(width: 150, alignment: .leading)
                     .background(
                         RoundedRectangle(cornerRadius: 5, style: .continuous)
                             .fill(.mint)
@@ -124,8 +122,10 @@ struct ContentView: View {
                     .padding(4)
                 }
             }
-            .marquee(availableWidth: 200, spacing: 20)
+            .marquee(spacing: 20, speedBasis: .period(4))
             .background(Color.black)
+            
+            Spacer()
         }
     }
 }
@@ -133,5 +133,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .frame(width: 200)
     }
 }
