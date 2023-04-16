@@ -8,11 +8,6 @@
 import SwiftUI
 
 struct MarqueeModifier: ViewModifier {
-    let availableWidth: CGFloat
-    let spacing: CGFloat
-    let delay: TimeInterval
-    let speedBasis: SpeedBasis
-    
     enum SpeedBasis {
         case period(TimeInterval)
         case velocity(CGFloat)
@@ -26,6 +21,11 @@ struct MarqueeModifier: ViewModifier {
             }
         }
     }
+    
+    let availableWidth: CGFloat
+    let spacing: CGFloat
+    let delay: TimeInterval
+    let speedBasis: SpeedBasis
     
     @State private var contentWidth: CGFloat?
     @State private var offset: CGFloat = 0
@@ -91,7 +91,7 @@ extension View {
     // GeometryReader and pass its proxy to .marquee(geometry:…).
     func marquee(
         spacing: CGFloat = 10,
-        delay: TimeInterval = 0,
+        delay: TimeInterval = 2,
         speedBasis: MarqueeModifier.SpeedBasis = .velocity(50)
     ) -> some View {
         GeometryReader { geometry in
@@ -122,7 +122,7 @@ struct MarqueeModifier_Previews: PreviewProvider {
                             .font(.subheadline)
                     }
                     .padding(5)
-                    .marquee(geometry: geometry, delay: 2)
+                    .marquee(geometry: geometry)
                     .background(Color.yellow.gradient)
                     
                     let interitemSpacing: CGFloat = 20
@@ -145,7 +145,7 @@ struct MarqueeModifier_Previews: PreviewProvider {
                         }
                     }
                     .padding(.horizontal, interitemSpacing)
-                    .marquee(geometry: geometry, spacing: -interitemSpacing, speedBasis: .period(2))
+                    .marquee(geometry: geometry, spacing: -interitemSpacing, delay: 0, speedBasis: .period(2))
                     
                     Spacer()
                 }
