@@ -28,11 +28,12 @@ struct MergeRequestRow: View {
                     }
                     .font(.headline)
 
-                    HStack(alignment: .firstTextBaseline, spacing: 2) {
+                    HStack(spacing: 2) {
                         PipelineStatusView(status: mergeRequest.headPipeline?.status ?? .canceled)
                         
                         Text(mergeRequest.sourceBranch)
                             .foregroundColor(.secondary)
+                            .marquee()
                         
                         Spacer()
                         

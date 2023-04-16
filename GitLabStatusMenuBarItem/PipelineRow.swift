@@ -36,7 +36,7 @@ struct PipelineRow: View {
                         Spacer()
                     }
                     .font(.headline)
-                        
+                    
                     HStack(alignment: .firstTextBaseline, spacing: 2) {
                         Group {
                             if let duration = pipeline.duration {
@@ -46,7 +46,6 @@ struct PipelineRow: View {
                             }
                         }
                         .foregroundColor(.secondary)
-                        
                         
                         Spacer()
                         
