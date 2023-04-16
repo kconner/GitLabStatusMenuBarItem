@@ -64,7 +64,7 @@ struct MarqueeModifier: ViewModifier {
                         // print("Content size: \(contentSize!)")
                     }
                 
-                if let availableWidth, let contentSize, /*0 < availableWidth, 0 < contentSize.width,*/ availableWidth < contentSize.width {
+                if let availableWidth, let contentSize, availableWidth < contentSize.width {
                     content
                         .fixedSize()
                         // .border(.green)
@@ -94,17 +94,10 @@ struct MarqueeModifier: ViewModifier {
             }
         )
         .onPreferenceChange(AvailableWidthKey.self) { value in
-            if value > 0 {
-                availableWidth = value
-            }
+            availableWidth = value
             // print("Available width: \(value)")
             // print("Content size: \(contentSize ?? .zero)")
         }
-        .frame(
-            minWidth: 0,
-            alignment: .leading
-        )
-        .frame(height: contentSize?.height)
     }
 }
 

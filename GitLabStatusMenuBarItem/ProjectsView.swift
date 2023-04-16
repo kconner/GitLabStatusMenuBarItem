@@ -48,7 +48,6 @@ struct ProjectsView: View {
                 }
             }
         }
-        .frame(width: 320, height: 700)
         .background(.background)
         .onAppear {
             store.refreshData()

@@ -19,6 +19,7 @@ struct GitLabStatusApp: App {
     var body: some Scene {
         MenuBarExtra {
             ProjectsView()
+                .frame(width: 320, height: 700)
                 .environmentObject(store)
         } label: {
             Image(systemName: "square.stack.3d.forward.dottedline.fill")
