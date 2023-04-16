@@ -11,6 +11,8 @@ struct MergeRequestRow: View {
     
     let mergeRequest: MergeRequest
     
+    @State private var isHovering = false
+    
     var body: some View {
         Button {
             NSWorkspace.shared.open(mergeRequest.webUrl)
@@ -31,9 +33,15 @@ struct MergeRequestRow: View {
                     HStack(spacing: 2) {
                         PipelineStatusView(status: mergeRequest.headPipeline?.status ?? .canceled)
                         
-                        Text(mergeRequest.sourceBranch)
-                            .foregroundColor(.secondary)
-                            .marquee()
+                        if isHovering {
+                            Text(mergeRequest.sourceBranch)
+                                .foregroundColor(.secondary)
+                                .marquee(delay: 1)
+                        } else {
+                            Text(mergeRequest.sourceBranch)
+                                .foregroundColor(.secondary)
+                                .lineLimit(1)
+                        }
                         
                         Spacer()
                         
@@ -65,6 +73,9 @@ struct MergeRequestRow: View {
             .padding(.vertical, 4)
         }
         .buttonStyle(PlainButtonStyle())
+        .onHover { newValue in
+            isHovering = newValue
+        }
     }
     
 }
