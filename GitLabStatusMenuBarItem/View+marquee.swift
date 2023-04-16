@@ -105,8 +105,8 @@ extension View {
     }
 }
 
-struct ContentView: View {
-    var body: some View {
+struct MarqueeModifier_Previews: PreviewProvider {
+    static var previews: some View {
         GeometryReader { geometry in
             ScrollView {
                 VStack {
@@ -151,12 +151,6 @@ struct ContentView: View {
                 }
             }
         }
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-            .frame(width: 250, height: 200)
+        .frame(width: 250, height: 200)
     }
 }
