@@ -31,101 +31,124 @@ struct MarqueeModifier: ViewModifier {
     @State private var offset: CGFloat = 0
     
     func body(content: Content) -> some View {
-        VStack(alignment: .leading) {
-            HStack(spacing: spacing) {
+        HStack(spacing: spacing) {
+            content
+                .fixedSize()
+                .background(
+                    GeometryReader { geometry in
+                        Color.clear
+                            .onAppear {
+                                if contentWidth == nil {
+                                    self.contentWidth = geometry.size.width
+                                }
+                            }
+                    }
+                )
+            
+            if let contentWidth, contentWidth > availableWidth {
                 content
                     .fixedSize()
-                    .background(
-                        GeometryReader { geometry in
-                            Color.clear
-                                .onAppear {
-                                    if contentWidth == nil {
-                                        self.contentWidth = geometry.size.width
-                                    }
-                                }
+                    .onAppear {
+                        withAnimation(
+                            Animation.linear(duration: speedBasis.duration(distance: contentWidth + spacing))
+                                .delay(delay)
+                                .repeatForever(autoreverses: false)
+                        ) {
+                            offset = -(contentWidth + spacing)
                         }
-                    )
-                
-                if let contentWidth, contentWidth > availableWidth {
-                    content
-                        .fixedSize()
-                        .onAppear {
-                            withAnimation(
-                                Animation.linear(duration: speedBasis.duration(distance: contentWidth + spacing))
-                                    .delay(delay)
-                                    .repeatForever(autoreverses: false)
-                            ) {
-                                offset = -(contentWidth + spacing)
-                            }
+                    }
+                    .onDisappear {
+                        withAnimation(.linear(duration: 0)) {
+                            offset = 0
                         }
-                        .onDisappear {
-                            withAnimation(.linear(duration: 0)) {
-                                offset = 0
-                            }
-                        }
-                }
+                    }
             }
-            .offset(x: offset)
         }
+        .offset(x: offset)
         .frame(width: availableWidth, alignment: .leading)
-        .clipped()
     }
 }
 
 extension View {
     func marquee(
-        availableWidth: CGFloat,
+        geometry: GeometryProxy,
         spacing: CGFloat = 10,
         delay: TimeInterval = 0,
         speedBasis: MarqueeModifier.SpeedBasis = .velocity(50)
     ) -> some View {
-            self.modifier(
-                MarqueeModifier(
-                    availableWidth: availableWidth,
-                    spacing: spacing,
-                    delay: delay,
-                    speedBasis: speedBasis
-                )
+        self.modifier(
+            MarqueeModifier(
+                availableWidth: geometry.size.width,
+                spacing: spacing,
+                delay: delay,
+                speedBasis: speedBasis
             )
+        )
+    }
+    
+    // This convenience overload does the geometry reading for you, but in so
+    // doing makes intrinsic vertical size greedy. To avoid that, make your own
+    // GeometryReader and pass its proxy to .marquee(geometry:…).
+    func marquee(
+        spacing: CGFloat = 10,
+        delay: TimeInterval = 0,
+        speedBasis: MarqueeModifier.SpeedBasis = .velocity(50)
+    ) -> some View {
+        GeometryReader { geometry in
+            self.marquee(
+                geometry: geometry,
+                spacing: spacing,
+                delay: delay,
+                speedBasis: speedBasis
+            )
+        }
     }
 }
 
 struct ContentView: View {
     var body: some View {
         GeometryReader { geometry in
-            VStack {
-                Text("Short; usually avoids animating.")
-                    .padding(5)
-                    .marquee(availableWidth: geometry.size.width)
-                    .background(Color.red)
-                
-                Text("This text pauses at the beginning of each loop of its animation.")
-                    .font(.headline)
-                    .padding(5)
-                    .marquee(availableWidth: geometry.size.width, delay: 2)
-                    .background(Color.yellow)
-                
-                HStack(spacing: 20) {
-                    ForEach(["One", "Two", "Three", "Four"], id: \.self) { title in
-                        HStack(spacing: 5) {
-                            Image(systemName: "number.circle")
-                            Text(title)
-                        }
-                        .font(.title3.bold())
-                        .padding(.vertical, 3)
-                        .padding(.horizontal, 6)
-                        .frame(width: 150, alignment: .leading)
-                        .background(
-                            RoundedRectangle(cornerRadius: 5, style: .continuous)
-                                .fill(.mint)
-                        )
-                        .padding(4)
+            ScrollView {
+                VStack {
+                    Text("Short; usually avoids animating.")
+                        .padding(5)
+                        .marquee(geometry: geometry)
+                        .background(Color.red.gradient)
+                    
+                    VStack(alignment: .leading) {
+                        Text("This text pauses at the beginning of each loop of its animation.")
+                            .font(.headline)
+                        Text("iPod 4 life")
+                            .font(.subheadline)
                     }
+                    .padding(5)
+                    .marquee(geometry: geometry, delay: 2)
+                    .background(Color.yellow.gradient)
+                    
+                    let interitemSpacing: CGFloat = 20
+                    
+                    HStack(spacing: interitemSpacing) {
+                        ForEach(["One", "Two", "Three", "Four"], id: \.self) { title in
+                            HStack(spacing: 5) {
+                                Image(systemName: "music.quarternote.3")
+                                Text(title)
+                            }
+                            .font(.title3.bold())
+                            .padding(.vertical, 3)
+                            .padding(.horizontal, 6)
+                            .frame(width: 100, alignment: .leading)
+                            .background(
+                                RoundedRectangle(cornerRadius: 5, style: .continuous)
+                                    .fill(Color.mint.gradient)
+                                    .shadow(radius: 2, y: 2)
+                            )
+                        }
+                    }
+                    .padding(.horizontal, interitemSpacing)
+                    .marquee(geometry: geometry, spacing: -interitemSpacing, speedBasis: .period(2))
+                    
+                    Spacer()
                 }
-                .marquee(availableWidth: geometry.size.width, spacing: 20, speedBasis: .period(4))
-                .background(Color.black)
-                
-                Spacer()
             }
         }
     }
@@ -134,6 +157,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-            .frame(width: 200)
+            .frame(width: 250, height: 200)
     }
 }
